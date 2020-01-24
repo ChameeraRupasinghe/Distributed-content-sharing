@@ -5,7 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
-public class Listner extends Thread {
+public class Listener extends Thread {
 
     private DatagramSocket socket;
     String s;
@@ -13,7 +13,7 @@ public class Listner extends Thread {
     @Override
     public void run() {
 
-        System.out.println("Listner started... "+ this.getId());
+        System.out.println("Listener started... "+ this.getId());
 
         try {
             socket = SocketService.getSocket();

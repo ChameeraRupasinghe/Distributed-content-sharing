@@ -17,8 +17,8 @@ public class Main {
 
 
         try {
-            Listner listner = new Listner();
-            listner.start();
+            Listener listener = new Listener();
+            listener.start();
 
             ipAddress = InetAddress.getLocalHost();
             System.out.println("IP Address: " + ipAddress.getHostAddress());
