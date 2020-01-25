@@ -10,6 +10,8 @@ import java.util.Scanner;
 public class Main {
 
     static InetAddress ipAddress;
+    static int listeningPort;
+    static String userName;
 
     static DatagramSocket socket;
 
@@ -18,20 +20,23 @@ public class Main {
 
         System.out.println("----Distributed File Sharing System----");
         Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter a User Name: ");
+        userName = scanner.nextLine();
         System.out.println("Enter the port number to communicate: ");
-        int portNumber = scanner.nextInt();
+        listeningPort = scanner.nextInt();
+
+        System.out.println("UNAME: " + userName + " Port: " + listeningPort);
 
 
         try {
-            Listener listener = new Listener(portNumber);
-            listener.start();
+            initializeListener();
 
             ipAddress = InetAddress.getLocalHost();
             System.out.println("IP Address: " + ipAddress.getHostAddress());
-            socket = SocketService.getSocket(portNumber);
+            socket = SocketService.getSocket(listeningPort);
 
-            RequestMessage regRequestMessage = new RegisterRequestMessage(ipAddress, portNumber,
-                    Config.USER_NAME);
+            //Send registration request
+            RequestMessage regRequestMessage = new RegisterRequestMessage(ipAddress, listeningPort, userName);
             DatagramPacket messagePacket = regRequestMessage.getDatagramPacket(Config.BS_ADDRESS, Config.BS_PORT);
             socket.send(messagePacket);
 
@@ -42,5 +47,10 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    static void initializeListener() {
+        Listener listener = new Listener(listeningPort);
+        listener.start();
     }
 }
