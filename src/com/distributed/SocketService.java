@@ -7,9 +7,10 @@ public class SocketService {
 
     private static DatagramSocket socket = null;
 
-    public static DatagramSocket getSocket() throws SocketException {
+    public static DatagramSocket getSocket(int portNumber) throws SocketException {
+        System.out.println(socket == null);
         if(socket == null){
-            socket = new DatagramSocket(Config.LISTENING_PORT);
+            socket = new DatagramSocket(portNumber);
         }
         return socket;
     }

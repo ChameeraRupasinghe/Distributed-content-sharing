@@ -8,7 +8,12 @@ import java.net.SocketException;
 public class Listener extends Thread {
 
     private DatagramSocket socket;
+    private int portNumber;
     String s;
+
+    public Listener(int portNumber){
+        this.portNumber = portNumber;
+    }
 
     @Override
     public void run() {
@@ -16,8 +21,7 @@ public class Listener extends Thread {
         System.out.println("Listener started... "+ this.getId());
 
         try {
-            socket = SocketService.getSocket();
-
+            socket = SocketService.getSocket(this.portNumber);
 
             while (true) {
                 byte[] buffer = new byte[65536];
@@ -28,9 +32,6 @@ public class Listener extends Thread {
                 s = new String(data, 0, incoming.getLength());
 
                 System.out.println(incoming.getAddress().getHostAddress() + " : " + incoming.getPort() + " - " + s);
-
-
-
             }
 
         } catch (SocketException e) {
