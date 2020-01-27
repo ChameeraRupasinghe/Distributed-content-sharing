@@ -1,4 +1,4 @@
-package com.distributed.messasges;
+package com.distributed.request;
 
 import java.net.InetAddress;
 

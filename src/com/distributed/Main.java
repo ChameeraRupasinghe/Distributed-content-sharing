@@ -1,7 +1,7 @@
 package com.distributed;
 
-import com.distributed.messasges.RegisterRequestMessage;
-import com.distributed.messasges.RequestMessage;
+import com.distributed.request.RegisterRequestMessage;
+import com.distributed.request.RequestMessage;
 
 import java.io.IOException;
 import java.net.*;
@@ -10,8 +10,7 @@ import java.util.Scanner;
 public class Main {
 
     static InetAddress ipAddress;
-    static int listeningPort;
-    static String userName;
+//    static String userName;
 
     static DatagramSocket socket;
 
@@ -21,15 +20,15 @@ public class Main {
         System.out.println("----Distributed File Sharing System----");
         Scanner scanner = new Scanner(System.in);
         System.out.println("Enter a User Name: ");
-        userName = scanner.nextLine();
+        String userName = scanner.nextLine();
         System.out.println("Enter the port number to communicate: ");
-        listeningPort = scanner.nextInt();
+        int listeningPort = scanner.nextInt();
 
         System.out.println("UNAME: " + userName + " Port: " + listeningPort);
 
 
         try {
-            initializeListener();
+            initializeListener(listeningPort);
 
             ipAddress = InetAddress.getLocalHost();
             System.out.println("IP Address: " + ipAddress.getHostAddress());
@@ -49,7 +48,7 @@ public class Main {
         }
     }
 
-    static void initializeListener() {
+    static void initializeListener(int listeningPort) {
         Listener listener = new Listener(listeningPort);
         listener.start();
     }

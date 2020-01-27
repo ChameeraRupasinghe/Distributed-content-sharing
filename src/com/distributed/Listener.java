@@ -1,9 +1,13 @@
 package com.distributed;
 
+import com.distributed.response.RegisterResponseMessage;
+import com.distributed.response.ResponseMessage;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
+import java.util.StringTokenizer;
 
 public class Listener extends Thread {
 
@@ -11,14 +15,14 @@ public class Listener extends Thread {
     private int portNumber;
     String s;
 
-    public Listener(int portNumber){
+    public Listener(int portNumber) {
         this.portNumber = portNumber;
     }
 
     @Override
     public void run() {
 
-        System.out.println("Listener started... "+ this.getId());
+        System.out.println("Listener started... " + this.getId());
 
         try {
             socket = SocketService.getSocket(this.portNumber);
@@ -30,14 +34,36 @@ public class Listener extends Thread {
 
                 byte[] data = incoming.getData();
                 s = new String(data, 0, incoming.getLength());
-
                 System.out.println(incoming.getAddress().getHostAddress() + " : " + incoming.getPort() + " - " + s);
+
+                StringTokenizer resTokenizer = new StringTokenizer(s, " ");
+                String resLength = resTokenizer.nextToken();
+                String type = resTokenizer.nextToken();
+
+                ResponseMessage responseMessage;
+
+                switch (type) {
+                    case "REGOK":
+                        System.out.println("REGOK BRO");
+                        responseMessage = new RegisterResponseMessage();
+                        responseMessage.decodeResponse(s);
+                        saveNeighbourDetails((RegisterResponseMessage) responseMessage);
+                        break;
+                }
             }
 
         } catch (SocketException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void saveNeighbourDetails(RegisterResponseMessage registerResponseMessage) {
+        if (registerResponseMessage.getNeighbours() != null && registerResponseMessage.getNeighbours().size() > 0) {
+            for (Neighbour neighbour : registerResponseMessage.getNeighbours()) {
+                NeighbourManager.getNeighbours().add(neighbour);
+            }
         }
     }
 }
