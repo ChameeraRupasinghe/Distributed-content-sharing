@@ -49,6 +49,11 @@ public class Listener extends Thread {
                         responseMessage.decodeResponse(s);
                         saveNeighbourDetails((RegisterResponseMessage) responseMessage);
                         break;
+
+//                    TODO: JOIN
+//                    TODO: SER ->
+//                    TODO: LEAVE
+
                 }
             }
 

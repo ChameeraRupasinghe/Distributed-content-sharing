@@ -39,6 +39,12 @@ public class Main {
             DatagramPacket messagePacket = regRequestMessage.getDatagramPacket(Config.BS_ADDRESS, Config.BS_PORT);
             socket.send(messagePacket);
 
+//            TODO: JOIN Request to other nodes (get the deatils from the bootstrap
+
+//            TODO: SEARCH (get input from the terminal)
+
+//            TODO: Download
+
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (SocketException e) {
