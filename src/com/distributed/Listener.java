@@ -67,7 +67,11 @@ public class Listener extends Thread {
     private void saveNeighbourDetails(RegisterResponseMessage registerResponseMessage) {
         if (registerResponseMessage.getNeighbours() != null && registerResponseMessage.getNeighbours().size() > 0) {
             for (Neighbour neighbour : registerResponseMessage.getNeighbours()) {
-                NeighbourManager.getNeighbours().add(neighbour);
+                try {
+                    NeighbourManager.addNeighbour(neighbour, portNumber);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
