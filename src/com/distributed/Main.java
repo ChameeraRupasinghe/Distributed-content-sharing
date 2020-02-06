@@ -45,6 +45,8 @@ public class Main {
 
 //            TODO: Download
 
+//            TODO: LEAVE
+
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (SocketException e) {
