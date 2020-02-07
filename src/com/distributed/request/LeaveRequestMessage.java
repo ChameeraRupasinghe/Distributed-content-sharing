@@ -2,14 +2,14 @@ package com.distributed.request;
 
 import java.net.InetAddress;
 
-public class RegisterRequestMessage extends RequestMessage {
+public class LeaveRequestMessage extends RequestMessage {
 
-    private static final String TYPE = "REG";
+    private static final String TYPE = "LEAVE";
     private InetAddress myAddress;
     private int myPort;
     private String userName;
 
-    public RegisterRequestMessage(InetAddress myAddress, int myPort, String userName) {
+    public LeaveRequestMessage(InetAddress myAddress, int myPort, String userName) {
         this.myAddress = myAddress;
         this.myPort = myPort;
         this.userName = userName;

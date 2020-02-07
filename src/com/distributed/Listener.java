@@ -53,6 +53,9 @@ public class Listener extends Thread {
 //                    TODO: JOIN
 //                    TODO: SER ->
 //                    TODO: LEAVE
+                    case "LEAVE":
+
+                        break;
 
                 }
             }

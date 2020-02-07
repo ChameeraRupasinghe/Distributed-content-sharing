@@ -1,6 +1,7 @@
 package com.distributed;
 
 import com.distributed.request.RegisterRequestMessage;
+import com.distributed.request.LeaveRequestMessage;
 import com.distributed.request.RequestMessage;
 
 import java.io.IOException;
@@ -46,6 +47,8 @@ public class Main {
 //            TODO: Download
 
 //            TODO: LEAVE
+            RequestMessage leaveRequestMessage = new LeaveRequestMessage(ipAddress, listeningPort, userName);
+            DatagramPacket messPacket = leaveRequestMessage.getDatagramPacket(Config., destinationPort)
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
