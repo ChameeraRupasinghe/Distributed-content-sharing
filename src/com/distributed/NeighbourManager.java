@@ -9,7 +9,7 @@ import java.util.List;
 
 public class NeighbourManager {
 
-    public static final List<Neighbour> neighbours = new ArrayList<>();
+    private static final List<Neighbour> neighbours = new ArrayList<>();
 
 
     public static List<Neighbour> getNeighbours() {
@@ -27,6 +27,11 @@ public class NeighbourManager {
         socket.send(joinDataPacket);
 
 
+    }
+
+    public static Neighbour removeNeighbour(Neighbour neighbour){
+        neighbours.remove(neighbour);
+        return neighbour;
     }
 
 }
