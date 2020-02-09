@@ -67,9 +67,6 @@ public class Main {
                 }
             }
 
-//            TODO: Search & Download
-
-
         } catch (UnknownHostException e) {
             e.printStackTrace();
         } catch (SocketException e) {

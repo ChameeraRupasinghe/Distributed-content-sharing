@@ -25,6 +25,7 @@ public class SearchRequestMessage extends RequestMessage{
         messageBuilder.append(TYPE).append(" ");
         messageBuilder.append(myAddress.getHostAddress().trim()).append(" ");
         messageBuilder.append(myPort).append(" ");
+        messageBuilder.append(fileName).append(" ");
         messageBuilder.append(hops);
 
         String messageLength = String.format("%04d", messageBuilder.length() + 5);
