@@ -57,8 +57,8 @@ public class Listener extends Thread {
                         System.out.println("JOIN OK");
                         responseMessage = new JoinResponseMessage();
                         responseMessage.decodeResponse(joinRes);
-                        
-//                    TODO: SER ->
+
+
                     case "LEAVE":
                         System.out.println("You Leaving?");
                         responseMessage = new LeaveResponseMessage();
