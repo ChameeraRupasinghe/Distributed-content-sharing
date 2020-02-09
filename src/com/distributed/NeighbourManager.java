@@ -12,4 +12,9 @@ public class NeighbourManager {
         return neighbours;
     }
 
+    public static Neighbour removeNeighbour(Neighbour neighbour){
+        neighbours.remove(neighbour);
+        return neighbour;
+    }
+
 }

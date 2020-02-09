@@ -19,7 +19,6 @@ public class RegisterResponseMessage extends ResponseMessage {
         super.length = tokenizer.nextToken();
         super.type = tokenizer.nextToken();
         this.noNodes = Integer.parseInt(tokenizer.nextToken());
-        System.out.println("What?" + noNodes);
         if (noNodes <= 2 && noNodes >= 0) {
             this.neighbours = new ArrayList<>();
             if (noNodes > 0) {

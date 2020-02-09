@@ -1,5 +1,6 @@
 package com.distributed;
 
+import com.distributed.response.LeaveResponseMessage;
 import com.distributed.response.RegisterResponseMessage;
 import com.distributed.response.ResponseMessage;
 
@@ -54,9 +55,15 @@ public class Listener extends Thread {
 //                    TODO: SER ->
 //                    TODO: LEAVE
                     case "LEAVE":
-
+                        System.out.println("You Leaving?");
+                        responseMessage = new LeaveResponseMessage();
+                        responseMessage.decodeResponse(s);
+                        handleLeave((LeaveResponseMessage) responseMessage);
                         break;
 
+                    case "LEAVEOK":
+                        System.out.println("LEAVEOK Received");
+                        System.exit(0);
                 }
             }
 
@@ -72,6 +79,36 @@ public class Listener extends Thread {
             for (Neighbour neighbour : registerResponseMessage.getNeighbours()) {
                 NeighbourManager.getNeighbours().add(neighbour);
             }
+        }
+    }
+
+    private void handleLeave(LeaveResponseMessage leaveResponseMessage) throws IOException {
+        System.out.println("You Leaving2? " + NeighbourManager.getNeighbours().size());
+        if (NeighbourManager.getNeighbours().size() > 0) {
+            for (Neighbour neighbour : NeighbourManager.getNeighbours()) {
+
+                System.out.println(neighbour.getPort());
+
+                if (leaveResponseMessage.getRequestSenderIpAddress().toString().equals(neighbour.getIp()) &&
+                        leaveResponseMessage.getRequestSenderPort() == neighbour.getPort()) {
+
+                    NeighbourManager.removeNeighbour(neighbour);
+                    System.out.println("One Down");
+
+                    String message = leaveResponseMessage.getResponseMessage(0);
+                    DatagramPacket responseDatagram = new DatagramPacket(
+                            message.getBytes(),
+                            message.getBytes().length,
+                            leaveResponseMessage.getRequestSenderIpAddress(),
+                            leaveResponseMessage.getRequestSenderPort());
+                    socket.send(responseDatagram);
+
+                    System.out.println("LEAVEOK BRO");
+                    break;
+                }
+
+            }
+
         }
     }
 }

@@ -1,10 +1,12 @@
 package com.distributed.response;
 
+import java.net.UnknownHostException;
+
 public abstract class ResponseMessage {
     protected String length;
     protected String type;
 
-    public abstract void decodeResponse(String response);
+    public abstract void decodeResponse(String response) throws UnknownHostException;
 
     public String getLength() {
         return length;

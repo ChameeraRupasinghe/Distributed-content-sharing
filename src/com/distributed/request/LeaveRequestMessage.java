@@ -20,8 +20,7 @@ public class LeaveRequestMessage extends RequestMessage {
         StringBuilder messageBuilder = new StringBuilder();
         messageBuilder.append(TYPE).append(" ");
         messageBuilder.append(myAddress.getHostAddress().trim()).append(" ");
-        messageBuilder.append(myPort).append(" ");
-        messageBuilder.append(userName);
+        messageBuilder.append(myPort);
 
         String messageLength = String.format("%04d", messageBuilder.length() + 5);
 
