@@ -52,12 +52,12 @@ public class Listener extends Thread {
                         responseMessage.decodeResponse(s);
                         saveNeighbourDetails((RegisterResponseMessage) responseMessage);
                         break;
+
                     case "JOIN" :
                         System.out.println("JOIN OK");
                         responseMessage = new JoinResponseMessage();
                         responseMessage.decodeResponse(joinRes);
-
-//                    TODO: JOIN
+                        
 //                    TODO: SER ->
                     case "LEAVE":
                         System.out.println("You Leaving?");
