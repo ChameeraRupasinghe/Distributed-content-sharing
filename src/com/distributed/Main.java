@@ -6,8 +6,10 @@ import com.distributed.request.RequestMessage;
 import com.distributed.response.RegisterResponseMessage;
 import com.distributed.request.SearchRequestMessage;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.*;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -83,8 +85,22 @@ public class Main {
         listener.start();
     }
 
-    static void handleSearch(String filename, int hops) {
-        RequestMessage searchRequestMessage = new SearchRequestMessage(ipAddress, listeningPort, filename, hops - 1);
+    static void handleSearch(String fileName, int hops) throws IOException {
+        FileNameManager.resetResults();
+        List<String> foundData = FileNameManager.findFile(fileName);
+        if (foundData.size() > 0) {
+            for (String file : foundData) {
+                FileNameManager.addToResult(file, ipAddress, listeningPort);
+            }
+        }
+
+        RequestMessage searchRequestMessage = new SearchRequestMessage(ipAddress, listeningPort, fileName, hops - 1);
+        for (Neighbour neighbour : NeighbourManager.getNeighbours()) {
+            DatagramPacket messPacket = searchRequestMessage.getDatagramPacket(InetAddress.getByName(neighbour.getIp()), neighbour.getPort());
+            socket.send(messPacket);
+            System.out.println("SEARCH sent to: " + neighbour.getIp() + ":" + neighbour.getPort());
+        }
+
     }
 
     static void handleDisconnect() throws IOException {
