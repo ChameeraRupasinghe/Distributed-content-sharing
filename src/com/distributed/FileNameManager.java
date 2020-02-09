@@ -60,6 +60,15 @@ public class FileNameManager {
         results.add(new FileX(port,ipAddress,filename));
     }
 
+    public static void printFileInfo(){
+        System.out.println("Available Files are ..");
+        if (results.size()>0){
+            for (FileX filex: results){
+                System.out.println(filex.fileName);
+            }
+        }
+    }
+
     public static void resetResults() {
         results.clear();
     }

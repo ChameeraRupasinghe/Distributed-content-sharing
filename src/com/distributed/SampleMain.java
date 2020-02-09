@@ -25,5 +25,8 @@ public class SampleMain {
 //        for (FileX file: FileNameManager.getResults()){
 //            System.out.println(file.fileName);
 //        }
+
+//        String i = "  sun glasses are  red   ";
+//        System.out.println(i.trim());
     }
 }
