@@ -3,6 +3,7 @@ package com.distributed.response;
 import com.distributed.Neighbour;
 import com.distributed.NeighbourManager;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -23,19 +24,24 @@ public class JoinResponseMessage extends ResponseMessage {
         myip= tokenizer.nextToken();
         port =  tokenizer.nextToken();
         //this.noNodes = Integer.parseInt(tokenizer.nextToken());
-        addNeighbours(ip,port);
+        try {
+            addNeighbours(ip,port);
+        } catch (Exception e){
+            e.getStackTrace();
+        }
 
 
-                }
+    }
 
 
 
 
-    private void addNeighbours(String ip, String port) {
+    private void addNeighbours(String ip, String port) throws IOException {
         int portNumber = Integer.parseInt(port);
         Neighbour neighbour = new Neighbour(ip, portNumber);
         //neighbours.add(neighbour);
-        NeighbourManager.neighbours.add(neighbour);
+//        NeighbourManager.neighbours.add(neighbour);
+        NeighbourManager.addNeighbour(neighbour, portNumber);
         System.out.println("New neighbour added: " + neighbour.toString());
 
     }
