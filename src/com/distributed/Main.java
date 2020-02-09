@@ -7,6 +7,7 @@ import com.distributed.request.SearchRequestMessage;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -41,6 +42,7 @@ public class Main {
             RequestMessage regRequestMessage = new RegisterRequestMessage(ipAddress, listeningPort, userName);
             DatagramPacket regMessagePacket = regRequestMessage.getDatagramPacket(Config.BS_ADDRESS, Config.BS_PORT);
             socket.send(regMessagePacket);
+            FileNameManager.initializeFiles();
 //            TODO: JOIN Request to other nodes (get the details from the bootstrap
 
             Thread.sleep(200);
@@ -54,7 +56,7 @@ public class Main {
                 switch (option) {
                     case 1:
                         System.out.println("Enter the file name: ");
-                        handleSearch(scanner.nextLine().trim(), 0);
+                        handleSearch(scanner.nextLine().trim(), 5);
                         break;
                     case 2:
                         handleDisconnect();
@@ -82,7 +84,7 @@ public class Main {
     }
 
     static void handleSearch(String filename, int hops) {
-        RequestMessage searchRequestMessage = new SearchRequestMessage(ipAddress, listeningPort, filename, hops);
+        RequestMessage searchRequestMessage = new SearchRequestMessage(ipAddress, listeningPort, filename, hops - 1);
     }
 
     static void handleDisconnect() throws IOException {
