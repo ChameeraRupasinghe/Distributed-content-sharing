@@ -53,7 +53,6 @@ public class Listener extends Thread {
 
 //                    TODO: JOIN
 //                    TODO: SER ->
-//                    TODO: LEAVE
                     case "LEAVE":
                         System.out.println("You Leaving?");
                         responseMessage = new LeaveResponseMessage();
