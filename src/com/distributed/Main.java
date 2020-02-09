@@ -43,7 +43,6 @@ public class Main {
             socket.send(regMessagePacket);
 //            TODO: JOIN Request to other nodes (get the details from the bootstrap
 
-//            TODO: SEARCH (get input from the terminal)
             Thread.sleep(200);
             while (true) {
                 // take input and send the packet
