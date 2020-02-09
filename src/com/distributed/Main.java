@@ -54,9 +54,8 @@ public class Main {
                 switch (option) {
                     case 1:
                         System.out.println("Enter the file name: ");
-                        handleSearch(scanner.nextLine().trim(), 10);
+                        handleSearch(scanner.nextLine().trim(), 0);
                         break;
-
                     case 2:
                         handleDisconnect();
                         break;
