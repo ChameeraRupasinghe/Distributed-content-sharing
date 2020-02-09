@@ -2,6 +2,7 @@ package com.distributed;
 
 import com.distributed.response.RegisterResponseMessage;
 import com.distributed.response.ResponseMessage;
+import com.distributed.response.JoinResponseMessage;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -35,11 +36,12 @@ public class Listener extends Thread {
                 byte[] data = incoming.getData();
                 s = new String(data, 0, incoming.getLength());
                 System.out.println(incoming.getAddress().getHostAddress() + " : " + incoming.getPort() + " - " + s);
-
+                String incomPort= Integer.toString(incoming.getPort());
+                String joinRes= s+ " " + incomPort;
                 StringTokenizer resTokenizer = new StringTokenizer(s, " ");
                 String resLength = resTokenizer.nextToken();
                 String type = resTokenizer.nextToken();
-
+                //System.out.println(type);
                 ResponseMessage responseMessage;
 
                 switch (type) {
@@ -49,6 +51,10 @@ public class Listener extends Thread {
                         responseMessage.decodeResponse(s);
                         saveNeighbourDetails((RegisterResponseMessage) responseMessage);
                         break;
+                    case "JOIN" :
+                        System.out.println("JOIN OK");
+                        responseMessage = new JoinResponseMessage();
+                        responseMessage.decodeResponse(joinRes);
 
 //                    TODO: JOIN
 //                    TODO: SER ->

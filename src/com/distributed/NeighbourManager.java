@@ -9,7 +9,7 @@ import java.util.List;
 
 public class NeighbourManager {
 
-    private static final List<Neighbour> neighbours = new ArrayList<>();
+    public static final List<Neighbour> neighbours = new ArrayList<>();
 
 
     public static List<Neighbour> getNeighbours() {
