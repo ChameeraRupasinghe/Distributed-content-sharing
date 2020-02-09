@@ -34,7 +34,6 @@ public class Neighbour {
         return "Neighbour{" +
                 "ip='" + ip + '\'' +
                 ", port=" + port +
-                ", username='" + username + '\'' +
                 '}';
     }
 }

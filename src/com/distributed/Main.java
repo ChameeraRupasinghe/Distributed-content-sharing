@@ -2,6 +2,7 @@ package com.distributed;
 
 import com.distributed.request.RegisterRequestMessage;
 import com.distributed.request.RequestMessage;
+import com.distributed.response.RegisterResponseMessage;
 
 import java.io.IOException;
 import java.net.*;
@@ -10,7 +11,7 @@ import java.util.Scanner;
 public class Main {
 
     static InetAddress ipAddress;
-//    static String userName;
+    static String userName;
 
     static DatagramSocket socket;
 
@@ -38,6 +39,8 @@ public class Main {
             RequestMessage regRequestMessage = new RegisterRequestMessage(ipAddress, listeningPort, userName);
             DatagramPacket messagePacket = regRequestMessage.getDatagramPacket(Config.BS_ADDRESS, Config.BS_PORT);
             socket.send(messagePacket);
+
+           //Join has implemented in the reponseRegisterMessage
 
 //            TODO: JOIN Request to other nodes (get the deatils from the bootstrap
 

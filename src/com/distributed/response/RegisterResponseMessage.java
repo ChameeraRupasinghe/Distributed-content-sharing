@@ -1,6 +1,7 @@
 package com.distributed.response;
 
 import com.distributed.Neighbour;
+import com.distributed.NeighbourManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ public class RegisterResponseMessage extends ResponseMessage {
     private int noNodes;
     private List<Neighbour> neighbours;
     private boolean neighboursExist = false;
+
 
     @Override
     public void decodeResponse(String response) {
@@ -33,8 +35,10 @@ public class RegisterResponseMessage extends ResponseMessage {
     private void addNeighbours(String ip, String port) {
         int portNumber = Integer.parseInt(port);
         Neighbour neighbour = new Neighbour(ip, portNumber);
-        System.out.println("New neighbour added: " + neighbour.toString());
         neighbours.add(neighbour);
+        //NeighbourManager.neighbours.add(neighbour);
+        System.out.println("New neighbour added: " + neighbour.toString());
+
     }
 
     public int getNoNodes() {
