@@ -5,7 +5,7 @@ This project is for a distributed content sharing system.
 ## How to Complie and Run
 - Download the codebase.
 - If you are using IntelliJ IDEA you can complie run the project with RUN COMMAND.
-- If you wish to complie and using `javac` you have to follow the steps in the [section below](https://github.com/ChameeraRupasinghe/Distributed-content-sharing/new/master?readme=1#manual-compilation). 
+- If you wish to complie and using `javac` you have to follow the steps in the section below. 
 
 ### Manual Compilation
 1. Using terminal navigate to the project folder.
@@ -13,7 +13,7 @@ This project is for a distributed content sharing system.
 ```shell
 $ javac -d out -sourcepath src src/com/distributed/Main.java
 ```
-3. Run the code manually according to the steps in the [section below](https://github.com/ChameeraRupasinghe/Distributed-content-sharing/new/master?readme=1#manual-execution).
+3. Run the code manually according to the steps in the section below.
 
 ### Manual Execution
 1. Navigate to **out** folder
