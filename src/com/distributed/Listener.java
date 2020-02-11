@@ -128,7 +128,7 @@ public class Listener extends Thread {
                 }
             }
         }
-        Main.setIs_Reged(true);
+        Main.setRegistered(true);
     }
 
     private void handleJoin(JoinResponseMessage joinResponseMessage) throws IOException {

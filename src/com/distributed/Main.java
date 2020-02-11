@@ -13,16 +13,16 @@ public class Main {
     static int listeningPort;
     static String userName;
 
-    private static boolean is_Reged;
-    private static boolean is_Join_Sent;
+    private static boolean registered;
+    private static boolean joined;
 
     static DatagramSocket socket;
 
 
     public static void main(String[] args) {
 
-        is_Reged = false;
-        is_Join_Sent = false;
+        registered = false;
+        joined = false;
 
         System.out.println("----Distributed File Sharing System----");
         Scanner scanner = new Scanner(System.in);
@@ -50,7 +50,7 @@ public class Main {
             socket.send(regMessagePacket);
             FileNameManager.initializeFiles();
 
-            while (!is_Reged) {
+            while (!registered) {
                 Thread.sleep(200);
             }
 
@@ -93,13 +93,7 @@ public class Main {
                 }
             }
 
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        } catch (SocketException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
@@ -141,11 +135,11 @@ public class Main {
         System.exit(0);
     }
 
-    public static boolean isIs_Reged() {
-        return is_Reged;
+    public static boolean isRegistered() {
+        return registered;
     }
 
-    public static void setIs_Reged(boolean is_Reged) {
-        Main.is_Reged = is_Reged;
+    public static void setRegistered(boolean registered) {
+        Main.registered = registered;
     }
 }
