@@ -11,8 +11,8 @@ public class SearchResponseMessage extends ResponseMessage {
     public static final int FAILURE = 9999; //failure due to node unreachable
     public static final int ERROR = 9998; // some other error
 
-    private InetAddress requestSenderIpAddress;
-    private int requestSenderPort;
+//    private InetAddress myIpAddress;
+//    private int myPort;
 
     private InetAddress originalNodeIpAddress;
     private int originalNodePort;
@@ -24,7 +24,6 @@ public class SearchResponseMessage extends ResponseMessage {
 
     @Override
     public void decodeResponse(String response) throws UnknownHostException {
-        System.out.println("You Searching 'decode");
         StringTokenizer tokenizer = new StringTokenizer(response, " ");
 
         super.length = tokenizer.nextToken();
@@ -51,5 +50,21 @@ public class SearchResponseMessage extends ResponseMessage {
         String messageLength = String.format("%04d", messageBuilder.length() + 5);
 
         return messageLength + " " + messageBuilder.toString().trim();
+    }
+
+    public InetAddress getOriginalNodeIpAddress() {
+        return originalNodeIpAddress;
+    }
+
+    public int getOriginalNodePort() {
+        return originalNodePort;
+    }
+
+    public String getQuery() {
+        return query;
+    }
+
+    public int getHops() {
+        return hops;
     }
 }

@@ -1,19 +1,24 @@
 package com.distributed;
 
+import com.distributed.request.RequestMessage;
+import com.distributed.request.SearchRequestMessage;
 import com.distributed.response.*;
 
 import java.io.IOException;
 import java.net.*;
+import java.util.List;
 import java.util.StringTokenizer;
 
 public class Listener extends Thread {
 
     private DatagramSocket socket;
     private int portNumber;
+    private InetAddress ipAddress;
     String s;
 
-    public Listener(int portNumber) {
+    public Listener(int portNumber) throws UnknownHostException {
         this.portNumber = portNumber;
+        this.ipAddress = InetAddress.getLocalHost();
     }
 
     @Override
@@ -55,7 +60,6 @@ public class Listener extends Thread {
                         break;
 
                     case "SER":
-                        System.out.println("SEARCH Received");
                         responseMessage = new SearchResponseMessage();
                         responseMessage.decodeResponse(s);
                         handleSearch((SearchResponseMessage) responseMessage);
@@ -143,23 +147,47 @@ public class Listener extends Thread {
         socket.send(responseDatagram);
     }
 
-    private void handleSearch(SearchResponseMessage searchResponseMessage) {
+    private void handleSearch(SearchResponseMessage searchResponseMessage) throws IOException {
+        System.out.println("SEARCH Received from " + searchResponseMessage.getOriginalNodePort());
+        FileNameManager.resetResults();
+        List<String> foundData = FileNameManager.findFile(searchResponseMessage.getQuery());
+        if (foundData.size() > 0) {
+            for (String file : foundData) {
+                FileNameManager.addToResult(file, ipAddress, portNumber);
+            }
+        }
+        String message = searchResponseMessage.getResponseMessage(ipAddress, portNumber, FileNameManager.getresultFileNameOnly());
+        DatagramPacket responseDatagram = new DatagramPacket(
+                message.getBytes(),
+                message.getBytes().length,
+                searchResponseMessage.getOriginalNodeIpAddress(),
+                searchResponseMessage.getOriginalNodePort());
+        socket.send(responseDatagram);
 
+        if (searchResponseMessage.getHops() > 0) {
+            RequestMessage searchRequestMessage = new SearchRequestMessage(
+                    ipAddress, portNumber, searchResponseMessage.getQuery(), searchResponseMessage.getHops() - 1);
+            if (NeighbourManager.getNeighbours().size() > 0) {
+                for (Neighbour neighbour : NeighbourManager.getNeighbours()) {
+                    DatagramPacket messPacket = searchRequestMessage.getDatagramPacket(InetAddress.getByName(neighbour.getIp()), neighbour.getPort());
+                    socket.send(messPacket);
+                    System.out.println("SEARCH sent to: " + neighbour.getIp() + ":" + neighbour.getPort());
+                }
+            }
+        }
     }
 
     private void handleLeave(LeaveResponseMessage leaveResponseMessage) throws IOException {
-        System.out.println("You Leaving2? " + NeighbourManager.getNeighbours().size());
+//        System.out.println("You Leaving2? " + NeighbourManager.getNeighbours().size());
         if (NeighbourManager.getNeighbours().size() > 0) {
             for (Neighbour neighbour : NeighbourManager.getNeighbours()) {
 
-                System.out.println(neighbour.getPort());
-                System.out.println(leaveResponseMessage.getRequestSenderIpAddress().toString() + "," + neighbour.getIp());
+//                System.out.println(neighbour.getPort());
 
-                if (leaveResponseMessage.getRequestSenderIpAddress().toString().equals(neighbour.getIp()) &&
+                if (leaveResponseMessage.getRequestSenderIpAddress().getHostAddress().equals(neighbour.getIp()) &&
                         leaveResponseMessage.getRequestSenderPort() == neighbour.getPort()) {
 
                     NeighbourManager.removeNeighbour(neighbour);
-                    System.out.println("One Down");
 
                     String message = leaveResponseMessage.getResponseMessage(0);
                     DatagramPacket responseDatagram = new DatagramPacket(
@@ -169,7 +197,7 @@ public class Listener extends Thread {
                             leaveResponseMessage.getRequestSenderPort());
                     socket.send(responseDatagram);
 
-                    System.out.println("LEAVEOK BRO");
+                    System.out.println(neighbour.getPort() + " left");
                     break;
                 }
 

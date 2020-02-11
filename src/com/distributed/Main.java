@@ -26,10 +26,12 @@ public class Main {
 
         System.out.println("----Distributed File Sharing System----");
         Scanner scanner = new Scanner(System.in);
-        System.out.println("Enter a User Name: ");
-        String userName = scanner.nextLine();
-        System.out.println("Enter the port number to communicate: ");
-        listeningPort = scanner.nextInt();
+//        System.out.println("Enter a User Name: ");
+//        String userName = scanner.nextLine();
+        userName = args[0].trim();
+//        System.out.println("Enter the port number to communicate: ");
+//        listeningPort = scanner.nextInt();
+        listeningPort = Integer.parseInt(args[1].trim());
 
         System.out.println("UNAME: " + userName + " Port: " + listeningPort);
 
@@ -56,7 +58,7 @@ public class Main {
             if (NeighbourManager.getNeighbours().size() > 0) {
                 for (Neighbour neighbour : NeighbourManager.getNeighbours()) {
 
-                    System.out.println("JOIN SENT" + neighbour.getPort());
+                    System.out.println("JOIN SENT " + neighbour.getPort());
 
                         String message = joinRequestMessage.getMessageString();
                         DatagramPacket responseDatagram = new DatagramPacket(
@@ -74,7 +76,7 @@ public class Main {
                 System.out.println("Select option : ");
                 System.out.println("1: Search");
                 System.out.println("2: Disconnect");
-                System.out.println(scanner.nextLine().trim());          //This is nonsense, need to remove in future
+                //System.out.println(scanner.nextLine().trim());          //This is nonsense, need to remove in future
                 int option = Integer.parseInt(scanner.nextLine().trim());
                 switch (option) {
                     case 1:
@@ -101,7 +103,7 @@ public class Main {
         }
     }
 
-    static void initializeListener(int listeningPort) {
+    static void initializeListener(int listeningPort) throws UnknownHostException {
         Listener listener = new Listener(listeningPort);
         listener.start();
     }

@@ -76,4 +76,12 @@ public class FileNameManager {
     public static List<FileX> getResults() {
         return results;
     }
+
+    public static List<String > getresultFileNameOnly() {
+        List<String> resultsFileNameOnly = new ArrayList<>();
+        for (FileX file: getResults()){
+            resultsFileNameOnly.add(file.fileName);
+        }
+        return resultsFileNameOnly;
+    }
 }

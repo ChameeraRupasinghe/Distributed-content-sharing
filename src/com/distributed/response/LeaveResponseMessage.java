@@ -12,7 +12,6 @@ public class LeaveResponseMessage extends ResponseMessage {
 
     @Override
     public void decodeResponse(String response) throws UnknownHostException {
-        System.out.println("You Leaving 'decode");
         StringTokenizer tokenizer = new StringTokenizer(response, " ");
 
         super.length = tokenizer.nextToken();
