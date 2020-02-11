@@ -1,12 +1,9 @@
 package com.distributed;
 
-import com.distributed.request.JoinRequestMessage;
 import com.distributed.response.*;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.StringTokenizer;
 
 public class Listener extends Thread {
@@ -48,11 +45,10 @@ public class Listener extends Thread {
                         System.out.println("REGOK BRO");
                         responseMessage = new RegisterResponseMessage();
                         responseMessage.decodeResponse(s);
-                        saveNeighbourDetails((RegisterResponseMessage) responseMessage);
+                        handleRegOk((RegisterResponseMessage) responseMessage);
                         break;
 
                     case "JOIN":
-                        System.out.println("JOIN OK");
                         responseMessage = new JoinResponseMessage();
                         responseMessage.decodeResponse(joinRes);
                         handleJoin((JoinResponseMessage) responseMessage);
@@ -107,13 +103,12 @@ public class Listener extends Thread {
                 FileNameManager.addToResult(tokenizer.nextToken(), ip, port);
             }
 
-        if (hops < 1){
+        if (hops < 1) {
             System.out.println("Finished");
-
         }
     }
 
-    private void saveNeighbourDetails(RegisterResponseMessage registerResponseMessage) {
+    private void handleRegOk(RegisterResponseMessage registerResponseMessage) {
         if (registerResponseMessage.getNeighbours() != null && registerResponseMessage.getNeighbours().size() > 0) {
             for (Neighbour neighbour : registerResponseMessage.getNeighbours()) {
                 try {
@@ -123,6 +118,7 @@ public class Listener extends Thread {
                 }
             }
         }
+        Main.setIs_Reged(true);
     }
 
     private void handleJoin(JoinResponseMessage joinResponseMessage) throws IOException {
@@ -130,12 +126,13 @@ public class Listener extends Thread {
 
         try {
             NeighbourManager.addNeighbour(
-                    new Neighbour(joinResponseMessage.getIp().getHostAddress(),joinResponseMessage.getPort())
+                    new Neighbour(joinResponseMessage.getIp().getHostAddress(), joinResponseMessage.getPort())
             );
         } catch (IOException e) {
             e.getStackTrace();
             value = 9999;
         }
+        System.out.println("JOIN OK to " + joinResponseMessage.getPort());
 
         String message = joinResponseMessage.getResponseMessage(value);
         DatagramPacket responseDatagram = new DatagramPacket(
@@ -144,8 +141,6 @@ public class Listener extends Thread {
                 joinResponseMessage.getIp(),
                 joinResponseMessage.getPort());
         socket.send(responseDatagram);
-
-        System.out.println("LEAVEOK BRO");
     }
 
     private void handleSearch(SearchResponseMessage searchResponseMessage) {
@@ -158,6 +153,7 @@ public class Listener extends Thread {
             for (Neighbour neighbour : NeighbourManager.getNeighbours()) {
 
                 System.out.println(neighbour.getPort());
+                System.out.println(leaveResponseMessage.getRequestSenderIpAddress().toString() + "," + neighbour.getIp());
 
                 if (leaveResponseMessage.getRequestSenderIpAddress().toString().equals(neighbour.getIp()) &&
                         leaveResponseMessage.getRequestSenderPort() == neighbour.getPort()) {

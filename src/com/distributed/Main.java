@@ -1,12 +1,7 @@
 package com.distributed;
 
-import com.distributed.request.RegisterRequestMessage;
-import com.distributed.request.LeaveRequestMessage;
-import com.distributed.request.RequestMessage;
-import com.distributed.response.RegisterResponseMessage;
-import com.distributed.request.SearchRequestMessage;
+import com.distributed.request.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.*;
 import java.util.List;
@@ -18,10 +13,16 @@ public class Main {
     static int listeningPort;
     static String userName;
 
+    private static boolean is_Reged;
+    private static boolean is_Join_Sent;
+
     static DatagramSocket socket;
 
 
     public static void main(String[] args) {
+
+        is_Reged = false;
+        is_Join_Sent = false;
 
         System.out.println("----Distributed File Sharing System----");
         Scanner scanner = new Scanner(System.in);
@@ -46,7 +47,26 @@ public class Main {
             socket.send(regMessagePacket);
             FileNameManager.initializeFiles();
 
+            while (!is_Reged) {
+                Thread.sleep(200);
+            }
 
+            RequestMessage joinRequestMessage = new JoinRequestMessage(ipAddress, listeningPort);
+
+            if (NeighbourManager.getNeighbours().size() > 0) {
+                for (Neighbour neighbour : NeighbourManager.getNeighbours()) {
+
+                    System.out.println("JOIN SENT" + neighbour.getPort());
+
+                        String message = joinRequestMessage.getMessageString();
+                        DatagramPacket responseDatagram = new DatagramPacket(
+                                message.getBytes(),
+                                message.getBytes().length,
+                                InetAddress.getByName(neighbour.getIp()),
+                                neighbour.getPort());
+                        socket.send(responseDatagram);
+                }
+            }
 
             Thread.sleep(200);
             while (true) {
@@ -112,8 +132,17 @@ public class Main {
             socket.send(messPacket);
             System.out.println("LEAVE sent to: " + neighbour.getIp() + ":" + neighbour.getPort());
         }
+        NeighbourManager.clearNeighbourList();
 //        RequestMessage leaveRequestMessage = new LeaveRequestMessage(ipAddress, listeningPort, userName);
 //        DatagramPacket messPacket = leaveRequestMessage.getDatagramPacket(Config., destinationPort)
-//        System.exit(0);
+        System.exit(0);
+    }
+
+    public static boolean isIs_Reged() {
+        return is_Reged;
+    }
+
+    public static void setIs_Reged(boolean is_Reged) {
+        Main.is_Reged = is_Reged;
     }
 }

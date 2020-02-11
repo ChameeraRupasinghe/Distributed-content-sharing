@@ -25,4 +25,8 @@ public class NeighbourManager {
         return neighbour;
     }
 
+    public static void clearNeighbourList(){
+        neighbours.clear();
+    }
+
 }
