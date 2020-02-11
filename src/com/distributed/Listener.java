@@ -16,9 +16,13 @@ public class Listener extends Thread {
     private InetAddress ipAddress;
     String s;
 
-    public Listener(int portNumber) throws UnknownHostException {
+    public Listener(int portNumber) {
         this.portNumber = portNumber;
-        this.ipAddress = InetAddress.getLocalHost();
+        try {
+            this.ipAddress = InetAddress.getLocalHost();
+        }catch (UnknownHostException h){
+            h.getStackTrace();
+        }
     }
 
     @Override
@@ -28,6 +32,7 @@ public class Listener extends Thread {
 
         try {
             socket = SocketService.getSocket(this.portNumber);
+            Thread.sleep(200);
 
             while (true) {
                 byte[] buffer = new byte[65536];

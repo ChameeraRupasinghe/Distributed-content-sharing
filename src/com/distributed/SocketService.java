@@ -8,7 +8,7 @@ public class SocketService {
     private static DatagramSocket socket = null;
 
     public static DatagramSocket getSocket(int portNumber) throws SocketException {
-        System.out.println(socket == null);
+        System.out.println(""+socket == null);
         if(socket == null){
             socket = new DatagramSocket(portNumber);
         }
