@@ -3,7 +3,10 @@ package com.distributed;
 import com.distributed.request.*;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,6 +18,7 @@ public class Main {
 
     private static boolean registered;
     private static boolean joined;
+    private static String search_done;
 
     static DatagramSocket socket;
 
@@ -35,9 +39,6 @@ public class Main {
 //        System.out.println("Enter the port number to communicate: ");
 //        listeningPort = scanner.nextInt();
 
-        System.out.println("UNAME: " + userName + " Port: " + listeningPort);
-
-
         try {
             initializeListener(listeningPort);
 
@@ -45,6 +46,8 @@ public class Main {
             System.out.println("IP Address: " + ipAddress.getHostAddress());
             Thread.sleep(200);
             socket = SocketService.getSocket(listeningPort);
+
+            LoggerX.log(userName + " " + listeningPort + " started");            //logging
 
             //Send registration request
             RequestMessage regRequestMessage = new RegisterRequestMessage(ipAddress, listeningPort, userName);
@@ -59,17 +62,16 @@ public class Main {
             RequestMessage joinRequestMessage = new JoinRequestMessage(ipAddress, listeningPort);
 
             if (NeighbourManager.getNeighbours().size() > 0) {
+
                 for (Neighbour neighbour : NeighbourManager.getNeighbours()) {
-
-                    System.out.println("JOIN SENT " + neighbour.getPort());
-
-                        String message = joinRequestMessage.getMessageString();
-                        DatagramPacket responseDatagram = new DatagramPacket(
-                                message.getBytes(),
-                                message.getBytes().length,
-                                InetAddress.getByName(neighbour.getIp()),
-                                neighbour.getPort());
-                        socket.send(responseDatagram);
+                    String message = joinRequestMessage.getMessageString();
+                    DatagramPacket responseDatagram = new DatagramPacket(
+                            message.getBytes(),
+                            message.getBytes().length,
+                            InetAddress.getByName(neighbour.getIp()),
+                            neighbour.getPort());
+                    socket.send(responseDatagram);
+                    LoggerX.log("Join request sent to " + neighbour.getPort());        //logging
                 }
             }
 
@@ -112,28 +114,35 @@ public class Main {
             for (String file : foundData) {
                 FileNameManager.addToResult(file, ipAddress, listeningPort);
             }
+            LoggerX.log("Some files were found in here. hops=" + hops);        //logging
         }
 
         RequestMessage searchRequestMessage = new SearchRequestMessage(ipAddress, listeningPort, fileName, hops - 1);
         for (Neighbour neighbour : NeighbourManager.getNeighbours()) {
             DatagramPacket messPacket = searchRequestMessage.getDatagramPacket(InetAddress.getByName(neighbour.getIp()), neighbour.getPort());
             socket.send(messPacket);
-            System.out.println("SEARCH sent to: " + neighbour.getIp() + ":" + neighbour.getPort());
+
+            LoggerX.log("Search request sent to " + neighbour.getPort() + ". with hops=" + (hops - 1));        //logging
         }
 
     }
 
     static void handleDisconnect() throws IOException {
-        System.out.println("Disconnecting this node");
+        LoggerX.log("-------Disconnecting this node---------");        //logging
+
         RequestMessage leaveRequestMessage = new LeaveRequestMessage(ipAddress, listeningPort, userName);
         for (Neighbour neighbour : NeighbourManager.getNeighbours()) {
             DatagramPacket messPacket = leaveRequestMessage.getDatagramPacket(InetAddress.getByName(neighbour.getIp()), neighbour.getPort());
             socket.send(messPacket);
-            System.out.println("LEAVE sent to: " + neighbour.getIp() + ":" + neighbour.getPort());
+
+            LoggerX.log("leave request sent to " + neighbour.getPort());        //logging
         }
         NeighbourManager.clearNeighbourList();
-//        RequestMessage leaveRequestMessage = new LeaveRequestMessage(ipAddress, listeningPort, userName);
-//        DatagramPacket messPacket = leaveRequestMessage.getDatagramPacket(Config., destinationPort)
+
+        RequestMessage unregisterRequestMessage = new UnregisterRequestMessage(ipAddress, listeningPort, userName);
+        DatagramPacket unregisterRequestMessageDatagramPacket = unregisterRequestMessage.getDatagramPacket(Config.BS_ADDRESS, Config.BS_PORT);
+        socket.send(unregisterRequestMessageDatagramPacket);
+
         System.exit(0);
     }
 
@@ -143,5 +152,13 @@ public class Main {
 
     public static void setRegistered(boolean registered) {
         Main.registered = registered;
+    }
+
+    public static String getSearch_done() {
+        return search_done;
+    }
+
+    public static void setSearch_done(String search_done) {
+        Main.search_done = search_done;
     }
 }

@@ -1,7 +1,6 @@
 package com.distributed.response;
 
 import com.distributed.Neighbour;
-import com.distributed.NeighbourManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +36,6 @@ public class RegisterResponseMessage extends ResponseMessage {
         Neighbour neighbour = new Neighbour(ip, portNumber);
         neighbours.add(neighbour);
         //NeighbourManager.neighbours.add(neighbour);
-        System.out.println("New neighbour added: " + neighbour.toString());
-
     }
 
     public int getNoNodes() {

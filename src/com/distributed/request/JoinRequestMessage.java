@@ -1,7 +1,5 @@
 package com.distributed.request;
 
-import com.distributed.Neighbour;
-
 import java.net.InetAddress;
 
 public class JoinRequestMessage extends RequestMessage {
