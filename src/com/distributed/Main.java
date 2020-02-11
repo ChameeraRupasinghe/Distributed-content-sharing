@@ -41,6 +41,7 @@ public class Main {
 
             ipAddress = InetAddress.getLocalHost();
             System.out.println("IP Address: " + ipAddress.getHostAddress());
+            Thread.sleep(200);
             socket = SocketService.getSocket(listeningPort);
 
             //Send registration request

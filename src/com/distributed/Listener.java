@@ -32,7 +32,6 @@ public class Listener extends Thread {
 
         try {
             socket = SocketService.getSocket(this.portNumber);
-            Thread.sleep(200);
 
             while (true) {
                 byte[] buffer = new byte[65536];
