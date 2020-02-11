@@ -24,14 +24,16 @@ public class Main {
         registered = false;
         joined = false;
 
+        userName = args[0].trim();
+        listeningPort = Integer.parseInt(args[1].trim());
+
         System.out.println("----Distributed File Sharing System----");
         Scanner scanner = new Scanner(System.in);
 //        System.out.println("Enter a User Name: ");
 //        String userName = scanner.nextLine();
-        userName = args[0].trim();
+
 //        System.out.println("Enter the port number to communicate: ");
 //        listeningPort = scanner.nextInt();
-        listeningPort = Integer.parseInt(args[1].trim());
 
         System.out.println("UNAME: " + userName + " Port: " + listeningPort);
 
