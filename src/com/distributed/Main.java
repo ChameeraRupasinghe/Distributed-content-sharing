@@ -45,7 +45,8 @@ public class Main {
             DatagramPacket regMessagePacket = regRequestMessage.getDatagramPacket(Config.BS_ADDRESS, Config.BS_PORT);
             socket.send(regMessagePacket);
             FileNameManager.initializeFiles();
-//            TODO: JOIN Request to other nodes (get the details from the bootstrap
+
+
 
             Thread.sleep(200);
             while (true) {

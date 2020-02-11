@@ -16,17 +16,8 @@ public class NeighbourManager {
         return neighbours;
     }
 
-    public static void addNeighbour(Neighbour neighbour, int listeningPort) throws IOException {
+    public static void addNeighbour(Neighbour neighbour) throws IOException {
         neighbours.add(neighbour);
-        JoinRequestMessage joinRequestMessage = new JoinRequestMessage(neighbour);
-
-
-        DatagramPacket joinDataPacket = joinRequestMessage.getDatagramPacket(InetAddress.getByName(neighbour.getIp()),
-                neighbour.getPort());
-        DatagramSocket socket = SocketService.getSocket(listeningPort);
-        socket.send(joinDataPacket);
-
-
     }
 
     public static Neighbour removeNeighbour(Neighbour neighbour){

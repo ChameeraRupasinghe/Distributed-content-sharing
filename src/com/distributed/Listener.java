@@ -1,5 +1,6 @@
 package com.distributed;
 
+import com.distributed.request.JoinRequestMessage;
 import com.distributed.response.*;
 
 import java.io.IOException;
@@ -54,16 +55,20 @@ public class Listener extends Thread {
                         System.out.println("JOIN OK");
                         responseMessage = new JoinResponseMessage();
                         responseMessage.decodeResponse(joinRes);
+                        handleJoin((JoinResponseMessage) responseMessage);
+                        break;
 
                     case "SER":
                         System.out.println("SEARCH Received");
                         responseMessage = new SearchResponseMessage();
                         responseMessage.decodeResponse(s);
                         handleSearch((SearchResponseMessage) responseMessage);
+                        break;
 
                     case "SEROK":
                         System.out.println("SER OK came");
                         handleSearchOk(s);
+                        break;
 
                     case "LEAVE":
                         System.out.println("You Leaving?");
@@ -75,6 +80,7 @@ public class Listener extends Thread {
                     case "LEAVEOK":
                         System.out.println("LEAVEOK Received");
                         System.exit(0);
+                        break;
                 }
             }
 
@@ -111,12 +117,35 @@ public class Listener extends Thread {
         if (registerResponseMessage.getNeighbours() != null && registerResponseMessage.getNeighbours().size() > 0) {
             for (Neighbour neighbour : registerResponseMessage.getNeighbours()) {
                 try {
-                    NeighbourManager.addNeighbour(neighbour, portNumber);
+                    NeighbourManager.addNeighbour(neighbour);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }
+    }
+
+    private void handleJoin(JoinResponseMessage joinResponseMessage) throws IOException {
+        int value = 0;
+
+        try {
+            NeighbourManager.addNeighbour(
+                    new Neighbour(joinResponseMessage.getIp().getHostAddress(),joinResponseMessage.getPort())
+            );
+        } catch (IOException e) {
+            e.getStackTrace();
+            value = 9999;
+        }
+
+        String message = joinResponseMessage.getResponseMessage(value);
+        DatagramPacket responseDatagram = new DatagramPacket(
+                message.getBytes(),
+                message.getBytes().length,
+                joinResponseMessage.getIp(),
+                joinResponseMessage.getPort());
+        socket.send(responseDatagram);
+
+        System.out.println("LEAVEOK BRO");
     }
 
     private void handleSearch(SearchResponseMessage searchResponseMessage) {
