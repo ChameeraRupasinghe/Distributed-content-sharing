@@ -28,5 +28,7 @@ public class SampleMain {
 
 //        String i = "  sun glasses are  red   ";
 //        System.out.println(i.trim());
+
+        LoggerX.log("no");
     }
 }
