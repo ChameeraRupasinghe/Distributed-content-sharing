@@ -88,6 +88,8 @@ public class Listener extends Thread {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -147,7 +149,7 @@ public class Listener extends Thread {
         socket.send(responseDatagram);
     }
 
-    private void handleSearch(SearchResponseMessage searchResponseMessage) throws IOException {
+    private void handleSearch(SearchResponseMessage searchResponseMessage) throws IOException, InterruptedException {
         System.out.println("SEARCH Received from " + searchResponseMessage.getOriginalNodePort());
         FileNameManager.resetResults();
         List<String> foundData = FileNameManager.findFile(searchResponseMessage.getQuery());
@@ -163,6 +165,8 @@ public class Listener extends Thread {
                 searchResponseMessage.getOriginalNodeIpAddress(),
                 searchResponseMessage.getOriginalNodePort());
         socket.send(responseDatagram);
+
+        Thread.sleep(100);
 
         if (searchResponseMessage.getHops() > 0) {
             RequestMessage searchRequestMessage = new SearchRequestMessage(
