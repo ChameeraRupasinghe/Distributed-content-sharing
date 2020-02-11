@@ -6,7 +6,6 @@ import java.net.UnknownHostException;
 public class Config {
 
     static InetAddress BS_ADDRESS;
-
     static {
         try {
             BS_ADDRESS = InetAddress.getLocalHost();
@@ -16,7 +15,5 @@ public class Config {
     }
 
     static final int BS_PORT = 55555;
-    static final int LISTENING_PORT = 6666;
-    static final String USER_NAME = "USER_1";
 
 }
