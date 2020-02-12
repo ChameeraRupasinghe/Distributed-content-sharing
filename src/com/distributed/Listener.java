@@ -164,7 +164,7 @@ public class Listener extends Thread {
                 FileNameManager.addToResult(file, ipAddress, portNumber);       //Not needed
             }
         }
-        String message = searchResponseMessage.getResponseMessage(ipAddress, portNumber, FileNameManager.getresultFileNameOnly());      //foundData can be used directly
+        String message = searchResponseMessage.getResponseMessage(ipAddress, portNumber, FileNameManager.getResultFileNameOnly());      //foundData can be used directly
         DatagramPacket responseDatagram = new DatagramPacket(
                 message.getBytes(),
                 message.getBytes().length,
