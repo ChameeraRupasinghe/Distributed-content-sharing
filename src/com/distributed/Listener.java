@@ -199,8 +199,6 @@ public class Listener extends Thread {
                         LoggerX.log("Search sent to " + neighbour.getPort() + ". with hops=" + (searchResponseMessage.getHops() - 1));        //logging
 
                     }
-
-                    //TODO: Check whether previous recipients are NOT selected [comment: CANNOT BE DONE]
                 }
             }
         } else {
