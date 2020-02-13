@@ -112,6 +112,8 @@ public class Listener extends Thread {
 
         if (hops < 1) {
             LoggerX.log("Searching finished. " + FileNameManager.getResults().size() + " files found.");        //logging
+        } else {
+            LoggerX.log("Something went wrong in the last execution. " + FileNameManager.getResults().size() + " files found.");        //logging
         }
     }
 

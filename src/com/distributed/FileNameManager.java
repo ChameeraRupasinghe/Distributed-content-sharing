@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Random;
 
@@ -86,4 +88,14 @@ public class FileNameManager {
     }
 
     //TODO: Find unique file names and return them
+//    public static Hashtable<String, List<String>> getUniqueResult() throws UnknownHostException {
+//        Hashtable<String, List<String>> resultsX = new Hashtable<>();
+//        for (FileX file: getResults()){
+//            if (!resultsX.containsKey(file.fileName)){
+//                InetAddress someAddress = InetAddress.getByName("123.231.1.1:3030");
+////                List <String>
+////                resultsX.put(file.fileName, )
+//            }
+//        }
+//    }
 }

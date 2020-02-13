@@ -30,5 +30,8 @@ public class SampleMain {
 //        System.out.println(i.trim());
 
 //        LoggerX.log("no");
+
+//        InetAddress someAddress = InetAddress.getByName("127.0.0.1:8000");
+//        System.out.println(someAddress);
     }
 }
