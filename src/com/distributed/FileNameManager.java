@@ -59,13 +59,13 @@ public class FileNameManager {
     }
 
     public static void addToResult(String filename, InetAddress ipAddress, int port) {
-        results.add(new FileX(port,ipAddress,filename));
+        results.add(new FileX(port, ipAddress, filename));
     }
 
-    public static void printFileInfo(){
+    public static void printFileInfo() {
         System.out.println("Available Files are ..");
-        if (results.size()>0){
-            for (FileX filex: results){
+        if (results.size() > 0) {
+            for (FileX filex : results) {
                 System.out.println(filex.fileName);
             }
         }
@@ -79,23 +79,28 @@ public class FileNameManager {
         return results;
     }
 
-    public static List<String > getResultFileNameOnly() {
+    public static List<String> getResultFileNameOnly() {
         List<String> resultsFileNameOnly = new ArrayList<>();
-        for (FileX file: getResults()){
+        for (FileX file : getResults()) {
             resultsFileNameOnly.add(file.fileName);
         }
         return resultsFileNameOnly;
     }
 
-    //TODO: Find unique file names and return them
-//    public static Hashtable<String, List<String>> getUniqueResult() throws UnknownHostException {
-//        Hashtable<String, List<String>> resultsX = new Hashtable<>();
-//        for (FileX file: getResults()){
-//            if (!resultsX.containsKey(file.fileName)){
-//                InetAddress someAddress = InetAddress.getByName("123.231.1.1:3030");
-////                List <String>
-////                resultsX.put(file.fileName, )
-//            }
-//        }
-//    }
+    public static Hashtable<String, List<String>> getHashTableForQueriedFiles() throws UnknownHostException {
+        Hashtable<String, List<String>> hashTableForQueriedFiles = new Hashtable<>();
+
+        for (FileX file : getResults()) {
+
+            if (!hashTableForQueriedFiles.containsKey(file.fileName)) {
+                String movie = file.fileName;
+                List<String> listOfIpAndPorts = new ArrayList<>();
+                listOfIpAndPorts.add(file.ipAddress + " " + file.port);
+
+                hashTableForQueriedFiles.put(movie, listOfIpAndPorts);
+            }
+        }
+
+        return hashTableForQueriedFiles;
+    }
 }
