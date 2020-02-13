@@ -7,7 +7,9 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
@@ -81,6 +83,8 @@ public class Main {
                 System.out.println("Select option : ");
                 System.out.println("1: Search");
                 System.out.println("2: Disconnect");
+                System.out.println("3: Get last query results");
+                System.out.println("4: Download file");
                 //System.out.println(scanner.nextLine().trim());          //This is nonsense, need to remove in future
                 int option = Integer.parseInt(scanner.nextLine().trim());
                 switch (option) {
@@ -90,6 +94,13 @@ public class Main {
                         break;
                     case 2:
                         handleDisconnect();
+                        break;
+                    case 3:
+                        handleGetLastQueryResult();
+                        break;
+                    case 4:
+                        System.out.println("Enter File Name to download: ");
+                        handleDownload(scanner.nextLine().trim());
                         break;
                     default:
                         System.out.println("Please enter a valid input");
@@ -144,6 +155,26 @@ public class Main {
         socket.send(unregisterRequestMessageDatagramPacket);
 
         System.exit(0);
+    }
+
+    static void handleGetLastQueryResult() {
+        if (FileNameManager.getResults().size() > 0) {
+            FileNameManager.printFileInfo();
+        }
+    }
+
+    private static void handleDownload(String movie) throws UnknownHostException {
+        if (FileNameManager.getResults().size() > 0) {
+            List<String> ipAndPort = FileNameManager.getHashTableForQueriedFiles().get(movie);
+            Random rand = new Random();
+            String randIpAndPortToDownloadFile = ipAndPort.get(rand.nextInt(ipAndPort.size()));
+
+            String ipToDownload = randIpAndPortToDownloadFile.split(" ")[0];
+            String portToDownload = randIpAndPortToDownloadFile.split(" ")[1];
+
+            Util.downloadFile(ipToDownload, portToDownload, movie);
+
+        }
     }
 
     public static boolean isRegistered() {

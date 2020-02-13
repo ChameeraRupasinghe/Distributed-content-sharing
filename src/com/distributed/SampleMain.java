@@ -33,5 +33,12 @@ public class SampleMain {
 
 //        InetAddress someAddress = InetAddress.getByName("127.0.0.1:8000");
 //        System.out.println(someAddress);
+
+        String doSomethingAndReturn = doSomethingAndReturn();
+        System.out.println(doSomethingAndReturn.equals(doSomethingAndReturn()));
+    }
+
+    public static String doSomethingAndReturn(){
+        return "LOL";
     }
 }

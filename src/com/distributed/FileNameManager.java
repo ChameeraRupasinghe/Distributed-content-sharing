@@ -103,4 +103,15 @@ public class FileNameManager {
 
         return hashTableForQueriedFiles;
     }
+
+    public static void printHashtable() throws UnknownHostException {
+        Hashtable<String, List<String>> hashTableForQueriedFiles = getHashTableForQueriedFiles();
+
+        hashTableForQueriedFiles.forEach((K, v) -> {
+            System.out.println(K);
+            for (String s : v) {
+                System.out.print(s + " , ");
+            }
+        });
+    }
 }
