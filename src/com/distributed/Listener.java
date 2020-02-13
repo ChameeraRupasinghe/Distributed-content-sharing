@@ -189,13 +189,18 @@ public class Listener extends Thread {
             if (NeighbourManager.getNeighbours().size() > 0) {
                 for (Neighbour neighbour : NeighbourManager.getNeighbours()) {
 
-                    //TODO: Check whether the original search requester is NOT selected
-                    //TODO: Check whether previous recipients are NOT selected
+                    //Check whether the original search requester is NOT selected to send Search request
+                    if (!searchResponseMessage.getOriginalNodeIpAddress().getHostAddress().equals(neighbour.getIp()) ||
+                            searchResponseMessage.getOriginalNodePort() != neighbour.getPort()) {
 
-                    DatagramPacket messPacket = searchRequestMessage.getDatagramPacket(InetAddress.getByName(neighbour.getIp()), neighbour.getPort());
-                    socket.send(messPacket);
+                        DatagramPacket messPacket = searchRequestMessage.getDatagramPacket(InetAddress.getByName(neighbour.getIp()), neighbour.getPort());
+                        socket.send(messPacket);
 
-                    LoggerX.log("Search sent to " + neighbour.getPort() + ". with hops=" + (searchResponseMessage.getHops() - 1));        //logging
+                        LoggerX.log("Search sent to " + neighbour.getPort() + ". with hops=" + (searchResponseMessage.getHops() - 1));        //logging
+
+                    }
+
+                    //TODO: Check whether previous recipients are NOT selected [comment: CANNOT BE DONE]
                 }
             }
         } else {
