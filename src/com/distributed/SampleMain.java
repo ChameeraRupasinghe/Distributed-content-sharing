@@ -5,7 +5,7 @@ import java.net.InetAddress;
 
 public class SampleMain {
 
-    public static void main(String[] args) throws IOException {
+//    public static void main(String[] args) throws IOException {
 //        FileNameManager.initializeFiles();
 //        for (String file: FileNameManager.getFileNames()){
 //            System.out.println(file);
@@ -34,11 +34,11 @@ public class SampleMain {
 //        InetAddress someAddress = InetAddress.getByName("127.0.0.1:8000");
 //        System.out.println(someAddress);
 
-        String doSomethingAndReturn = doSomethingAndReturn();
-        System.out.println(doSomethingAndReturn.equals(doSomethingAndReturn()));
-    }
+//        String doSomethingAndReturn = doSomethingAndReturn();
+//        System.out.println(doSomethingAndReturn.equals(doSomethingAndReturn()));
+//    }
 
-    public static String doSomethingAndReturn(){
-        return "LOL";
-    }
+//    public static String doSomethingAndReturn(){
+//        return "LOL";
+//    }
 }
