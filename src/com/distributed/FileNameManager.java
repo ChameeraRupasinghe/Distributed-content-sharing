@@ -27,7 +27,7 @@ public class FileNameManager {
         String line = reader.readLine();
 
         while (line != null) {
-            temp.add(line);
+            temp.add(line.replace(" ", "_"));
             line = reader.readLine();
         }
         reader.close();
@@ -43,15 +43,16 @@ public class FileNameManager {
         }
     }
 
-    public static List<String> findFile(String fileName) {
+    public static List<String> findFile(String movie) {
 
         List<String> tempFileNames = new ArrayList<>();
 
         if (fileNames.size() > 0) {
             for (String file : fileNames) {
-                if (file.toLowerCase().contains(fileName.toLowerCase())) {
+                if (file.toLowerCase().contains(movie.toLowerCase())) {
                     tempFileNames.add(file);
                 }
+                //TODO: Check only tokens (words). Not sequence of chars
             }
         }
 

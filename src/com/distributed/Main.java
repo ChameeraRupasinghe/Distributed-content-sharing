@@ -157,9 +157,9 @@ public class Main {
         System.exit(0);
     }
 
-    static void handleGetLastQueryResult() {
+    static void handleGetLastQueryResult() throws UnknownHostException {
         if (FileNameManager.getResults().size() > 0) {
-            FileNameManager.printFileInfo();
+            FileNameManager.printHashtable();
         }
     }
 
