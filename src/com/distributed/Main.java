@@ -90,7 +90,10 @@ public class Main {
                 switch (option) {
                     case 1:
                         System.out.println("Enter the file name: ");
-                        handleSearch(scanner.nextLine().trim(), 5);
+                        String movie = scanner.nextLine().trim();
+                        System.out.println("Enter hop count: ");
+                        String hops = scanner.nextLine().trim();;
+                        handleSearch(movie, Integer.parseInt(hops));
                         break;
                     case 2:
                         handleDisconnect();
