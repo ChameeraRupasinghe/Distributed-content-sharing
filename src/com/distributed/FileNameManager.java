@@ -21,7 +21,7 @@ public class FileNameManager {
     }
 
     public static void initializeFiles() throws IOException {
-        BufferedReader reader = new BufferedReader(new FileReader("/home/dulaj/projects/temp_files/file_names"));
+        BufferedReader reader = new BufferedReader(new FileReader("/home/dulaj/Projects/temp_files/file_names"));
         List<String> temp = new ArrayList<>();
 
         String line = reader.readLine();
